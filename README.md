@@ -9,3 +9,11 @@ git clone https://github.com/JayZ2398/dotfiles.git ~
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~dotfiles/.bash_aliases ~/.bash_aliases
 ```
+
+Then you can make your aliases take effect by opening up your terminal profile (i.e. `.bashrc`, `.zshrc`, etc.) and adding:
+
+```bash
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+```
