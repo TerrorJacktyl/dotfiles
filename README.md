@@ -7,7 +7,7 @@ Keep your dotfiles in this repo. You probably want to clone this repo on your ma
 git clone https://github.com/JayZ2398/dotfiles.git ~
 # symlink dotfiles in home dir to repo dotfiles
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
-ln -s ~dotfiles/.bash_aliases ~/.bash_aliases
+ln -s ~/dotfiles/.bash_aliases ~/.bash_aliases
 ```
 
 Then you can make your aliases take effect by opening up your terminal profile (i.e. `.bashrc`, `.zshrc`, etc.) and adding:

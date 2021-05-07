@@ -28,3 +28,8 @@
 	savem = !git add -A && git commit -m
 	save = !git savem 'save progress'
 	undo = !git reset HEAD~1 --mixed
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
