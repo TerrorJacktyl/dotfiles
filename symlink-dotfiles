@@ -1,0 +1,10 @@
+#!/bin/bash
+for file in files/.*
+do
+  filename=$(basename ${file})
+  if [[ "$filename" == "." || "$filename" == ".." ]]; then 
+      continue 
+  fi
+  echo "${filename}"
+  ln -s ${file} ~/${filename}
+done

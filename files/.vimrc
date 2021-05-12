@@ -1,5 +1,5 @@
-# Navigation keys move relative to displayed lines
-# i.e. k will move up onto the same line if the current line is wrapped
+" Navigation keys move relative to displayed lines
+" i.e. k will move up onto the same line if the current line is wrapped
 nnoremap j gj
 nnoremap k gk
 vnoremap j gj
