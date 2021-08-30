@@ -1,6 +1,6 @@
 # Dotfiles repo
 
-Keep your dotfiles in this repo. You probably want to clone this repo on your machine and then put the dotfiles into your home directory. Since you can only `git clone` into an _empty_ directory, you can symlink these files instead:
+Keep your dotfiles in this repo. You probably want to fork this repo then clone it on your machine into $HOME/dotfiles (i.e. run `git clone <repo-url>` from your home). Since you can only `git clone` into an _empty_ directory, you can symlink these files instead:
 
 ```bash
 # clone repo into ~/dotfiles
