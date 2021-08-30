@@ -1,8 +1,9 @@
 [credential]
 	helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
 [user]
-	email = jackzezula@tuta.io
-	name = Jack Z
+	email = jack.z@canva.com
+	name = Jack Zezula
+	signingkey = 756CCBC50C10AF88
 [alias]
 	a = add
 	b = branch
@@ -33,3 +34,7 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[gpg]
+	program = /usr/local/bin/gpg
+[commit]
+	gpgsign = true
