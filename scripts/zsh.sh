@@ -1,2 +1,8 @@
+# Prerequisites: zsh installed
 # install oh-my-zsh. You must replace ~/.zshrc with the one in files
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# replace the default .zshrc files with the one in dotfiles/files
+rm ~/.zshrc
+./symlink-dotfiles
+source ~/.zshrc

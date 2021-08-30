@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ~/dotfiles
 for file in files/.*
 do
   filename=$(basename ${file})
