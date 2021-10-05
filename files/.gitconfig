@@ -1,34 +1,11 @@
+[include]
+    path = ~/.gitconfig.aliases
 [credential]
 	helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
 [user]
 	email = jack.z@canva.com
 	name = Jack Zezula
 	signingkey = 756CCBC50C10AF88
-[alias]
-	a = add
-	b = branch
-	cm = commit
-	cma = commit --amend
-	cmm = commit -m
-	co = checkout
-	cob = checkout -b
-	d = diff
-	ds = diff --staged
-	del = branch -d
-	lg = !git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30
-	lgo = log --oneline
-	r = rebase
-	ri = rebase -i
-	s = status
-	st = stash
-	stl = stash list
-	stp = stash pop
-
-	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
-	done = !git push
-	savem = !git add -A && git commit -m
-	save = !git savem 'save progress'
-	undo = !git reset HEAD~1 --mixed
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -38,3 +15,9 @@
 	program = /usr/local/bin/gpg
 [commit]
 	gpgsign = true
+[protocol]
+	version = 2
+[core]
+	excludesFile = ~/.gitignore
+[maintenance]
+	repo = /Users/jackzezula/work/canva
