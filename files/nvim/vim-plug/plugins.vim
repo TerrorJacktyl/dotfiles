@@ -12,6 +12,10 @@ Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'} " mru and stuff
 Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'} " color highlighting
 
+" file navigation
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 " motion
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch-easymotion.vim'
@@ -40,12 +44,11 @@ Plug 'tpope/vim-commentary'
 " themes
 Plug 'projekt0n/github-nvim-theme'
 
-" file navigation
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
+
+" undo tree
+Plug 'mbbill/undotree'
 
 " " completion
 " Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins' }

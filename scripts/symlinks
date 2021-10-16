@@ -1,4 +1,5 @@
 #!/bin/bash
+# symlinks necessary dotfiles and config files
 cd ~/dotfiles
 for file in files/.*
 do
@@ -8,3 +9,7 @@ do
   fi
   ln -s ~/dotfiles/files/${filename} ~/${filename}
 done
+
+# symlink vim things
+mkdir -p ~/.config/
+ln -s ~/dotfiles/files/nvim ~/.config/nvim

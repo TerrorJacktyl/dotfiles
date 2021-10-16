@@ -12,8 +12,10 @@ source $HOME/.config/nvim/vim-plug/plugins.vim
   " You'll see it a lot below as <leader>
   let mapleader = ","
   
-  " autowrite to files whenever we type so we can edit and jumpto as we please
-  set autowriteall
+  " allow opening buffers in a window containing a buffer with unsaved changes
+  " aka allow opening a file in the current window without saving the current
+  " file
+  set hidden
 
   " reload init.vim
   nnoremap <leader>sd :source $MYVIMRC<CR>
@@ -175,3 +177,6 @@ source $HOME/.config/nvim/vim-plug/plugins.vim
 
 " tsx
   let g:yats_host_keyword = 1
+
+" undo tree
+  nnoremap <leader>u :UndotreeToggle<CR>

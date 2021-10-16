@@ -115,9 +115,14 @@ if [[ -f ~/.bash_aliases ]]; then
     . ~/.bash_aliases
 fi
 
-# FZF: use ripgrep instead
-if type rg &> /dev/null; then
-  export FZF_DEFAULT_COMMAND='rg --files'
-  export FZF_DEFAULT_OPTS='-m --height 50% --border'
-fi
+# FZF use ripgrep instead
 
+  # use ripgrep instead
+  if type rg &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='rg --files'
+    export FZF_DEFAULT_OPTS='-m --height 50% --border'
+  fi
+
+  # change default commands
+  # alt-c is esc-c which conflicts with using vim (i.e. esc cc)
+  bindkey -r "^[c" && bindkey "^[C" fzf-cd-widget
