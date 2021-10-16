@@ -1,0 +1,2 @@
+nvim --headless +PlugInstall +qa
+(cd ~/.config/nvim/plugged/coc.nvim && yarn install)
