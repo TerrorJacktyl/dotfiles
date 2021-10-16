@@ -1,0 +1,2 @@
+#!/bin/bash
+cat ~/dotfiles/files/gitconfig_include >> ~/.gitconfig
