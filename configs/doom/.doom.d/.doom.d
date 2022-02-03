@@ -1,1 +1,0 @@
-/Users/jackzezula/dotfiles/configs/doom/.doom.d
