@@ -55,6 +55,7 @@
 
 ;; basics
 (setq doom-font (font-spec :family "Hack" :size 16))
+(desktop-save-mode 1) ;; save emacs workspaces, buffers etc between quiting the app
 
 ;; evil mode
         ;; make movement respect visual lines rather than logical lines
@@ -72,6 +73,9 @@
 
         (advice-add 'evil-previous-line :around 'evil-previous-line--check-visual-line-mode)
 
+;; org-habit
+        ;; (setq org-modules '(org-habit))
+        ;; (add-hook org-load-hook (lamba() (setq 'org-habit-graph-column 80)))
 ;; org-roam
         (use-package! org-roam
         :ensure t
