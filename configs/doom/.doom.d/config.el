@@ -73,6 +73,15 @@
 
         (advice-add 'evil-previous-line :around 'evil-previous-line--check-visual-line-mode)
 
+        ;; rebind easymotion to f and s
+        (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
+        (add-hook 'evil-mode-hook
+                  (lambda ()
+                    (evil-define-key '(normal visual) 'global
+                                "f" 'avy-goto-char
+                                "s" 'avy-goto-char-2)
+                    ))
+
 ;; org-habit
         ;; (setq org-modules '(org-habit))
         ;; (add-hook org-load-hook (lamba() (setq 'org-habit-graph-column 80)))
