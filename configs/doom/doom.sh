@@ -17,8 +17,5 @@ fi
 # symlink the config in this repo to where your actual doom config should live
 ln -s ~/dotfiles/configs/doom/.doom.d ~/.doom.d
 
-# install notes for org
-git clone git@github.com:JayZ2398/notes.git ~/git/notes
-
 # run doom sync to load the config into emacs
 doom sync

@@ -22,11 +22,6 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
-
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/git/notes/notes/")
@@ -55,6 +50,7 @@
 
 ;; basics
 (setq doom-font (font-spec :family "Hack" :size 16))
+(setq doom-theme 'doom-vibrant)
 (desktop-save-mode 1) ;; save emacs workspaces, buffers etc between quiting the app
 
 ;; evil mode
@@ -75,16 +71,14 @@
 
         ;; rebind easymotion to f and s
         (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
-        (add-hook 'evil-mode-hook
-                  (lambda ()
-                    (evil-define-key '(normal visual) 'global
-                                "f" 'avy-goto-char
-                                "s" 'avy-goto-char-2)
-                    ))
+        (map! :after evil
+              :nv "f" #'avy-goto-char
+              :nv "s" #'avy-goto-char-2)
 
-;; org-habit
-        ;; (setq org-modules '(org-habit))
-        ;; (add-hook org-load-hook (lamba() (setq 'org-habit-graph-column 80)))
+;; org
+(setq org-agenda-custom-commands
+      '(("J" "Job agenda" ((tags-todo "canva")))))
+
 ;; org-roam
         (use-package! org-roam
         :ensure t
@@ -102,3 +96,17 @@
                         ("C-c n a" . org-roam-alias-add)
                         ("C-c n l" . org-roam-buffer-toggle))
                         )))
+
+;; typescript
+;; (use-package! typescript-mode
+;;   :mode "\\.ts\\'"
+;;   :hook (typescript-mode . lsp-deferred)
+;;   :config
+;;   (setq typescript-indent-level 2))
+
+;; keybinds
+;; (map! :leader
+;;       (:prefix-map ("o" . "org")
+;;        (:prefix ("a" . "agenda")
+;;         :desc "Canva agenda" "c" #'
+;;         )))
