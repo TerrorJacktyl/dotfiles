@@ -11,11 +11,8 @@
     packages = with pkgs; [
       docker
       fd
-      neovim
       ripgrep
-      starship
       tree
-      tree-sitter
       youtube-dl
       (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"]; })
     ];
@@ -23,29 +20,15 @@
   };
 
   programs = {
-    alacritty = {
+    home-manager = {
+      # This needs to be true for this entire config to take effect
       enable = true;
-      settings = {
-        cursor.style = "Beam";
-        font = {
-          family = "DroidSansMono";
-          size = 18;
-        };
-        prompt = "echo (starship prompt)";
-        # Change the default shell to home-manager's fish rather than the system default
-        shell.program = "${config.home.profileDirectory}/bin/fish";
-        window.dimensions = {
-          lines = 50;
-          columns = 100;
-          opacity = 0.95;
-        };
-      };
     };
 
     bat = {
       enable = true;
       config = {
-        theme = "GitHub";
+        theme = "TwoDark";
         italic-text = "always";
       };
     };
@@ -59,11 +42,19 @@
 
     fish = {
       enable = true;
+      interactiveShellInit = ''
+        # Activate the iTerm 2 shell integration
+        # iterm2_shell_integration
+
+        # Make fzf use fd because it's faster than find
+        set --universal FZF_DEFAULT_COMMAND 'fd'
+
+        # allow finding programs installed by go
+        fish_add_path $HOME/go/bin
+        # allow homebrew and its programs
+        fish_add_path /opt/homebrew/bin
+      '';
       plugins = [
-        {
-          name = "iterm2-shell-integration";
-          src = ./config/fish/iterm2_shell_integration;
-        }
         {
           name = "fzf";
           src = pkgs.fetchFromGitHub {
@@ -85,12 +76,6 @@
           };
         }
       ];
-      interactiveShellInit = ''
-        # Activate the iTerm 2 shell integration
-        iterm2_shell_integration
-        # Manually load starship
-        starship init fish | source
-      '';
       shellAliases = {
         nvim = "nvim -p";
         vim = "vim -p";
@@ -105,12 +90,32 @@
       shellAbbrs = {
         b = "bat";
         g = "git";
-        hme = "home-manager -f ~/dotfiles/home.nix edit";
+        cf = "code (fd . . | fzf)";
+        cr = "vscode_from_fuzzy_ripgrep";
+        fr = "filename_from_fuzzy_ripgrep";
+        hme = "EDITOR=(which nvim) home-manager -f ~/dotfiles/home.nix edit";
         hms = "home-manager -f ~/dotfiles/home.nix switch";
         n = "nvim";
         o = "open";
       };
       functions = {
+        string_to_args = {
+          description = "Convert a string containing spaces to a list, which when substituted will act like each word was typed as a separate command";
+          argumentNames = "s";
+          body = "string split ' ' -- $s";
+        };
+        vscode_from_fuzzy_ripgrep = {
+          description = "Filter file contents using ripgrep, select a match from a fuzzy-search, and finally open the selection in VSCode.";
+          body = "code --goto (filename_and_line_from_fuzzy_ripgrep $argv)";
+        };
+        filename_and_line_from_fuzzy_ripgrep = {
+          description = "Filter file contents using ripgrep, select a match from a fuzzy-search, and finally return the path and line number of the match. For example, path/to/file:23";
+          body = "rg --line-number (string_to_args \"$argv\") | fzf | string match --regex -g -- '^([^:]+:\\d+):'";
+        };
+        filename_from_fuzzy_ripgrep = {
+          description = "Filter file contents using ripgrep, select a match from a fuzzy-search, and finally return the path in the match.";
+          body = "rg (string_to_args \"$argv\") | fzf | string match --regex -g -- '^([^:]*):'";
+        };
         ctrlp = {
           description = "Launch Neovim file finder from the shell";
           argumentNames = "hidden";
@@ -130,6 +135,23 @@
         fish_mode_prompt = {
           description = "Vim mode in fish";
           body = "fish_default_mode_prompt";
+        };
+        fish_prompt = {
+          description = "Main prompt (ie directory and username).";
+          body = ''
+            set -l last_status $status
+            # Prompt status only if it's not 0
+            set -l stat
+            if test $last_status -ne 0
+                set stat (set_color red)"[$last_status] "(set_color normal)
+            end
+
+            string join "" -- (set_color green) (prompt_pwd) (set_color normal) " " $stat "λ" " "
+          '';
+        };
+        fish_right_prompt = {
+          description = "Right prompt in fish";
+          body = "";
         };
         fish_user_key_bindings = {
           description = "Set custom key bindings";
@@ -184,10 +206,18 @@
         d = "diff";
         ds = "diff --staged";
         del = "branch -d";
+        fo = "!git fetch origin \"$1\":\"$1\" #";
+        fog = "fo green";
+        fom = "fo master";
         lg = "!git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30";
         lgo = "log --oneline";
+        po = "!git pull origin \"$1\" #";
         r = "rebase";
         ri = "rebase -i";
+        # Useful for checking out a branch (e.g. master) without blocking other worktrees from using the same branch.
+        rp = "rev-parse";
+        rpm = "rev-parse master";
+        rpg = "rev-parse green";
         s = "status";
         st = "stash";
         prettylog = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
@@ -197,7 +227,6 @@
         options = {
           navigate = true;
           line-numbers = true;
-          syntax-theme = "GitHub";
         };
       };
       extraConfig = {
@@ -212,6 +241,8 @@
         };
         diff = {
           colorMoved = "default";
+          external = "difft";
+          tool = "difft";
         };
         merge = {
           conflictstyle = "zdiff3";
@@ -243,42 +274,32 @@
       ];
     };
 
-    helix = {
+    neovim = {
       enable = true;
-      settings = {
-        theme = "onelight";
-        editor = {
-          bufferline = "multiple";
-          color-modes = true;
-          lsp.display-messages = true;
-        };
-        keys.normal = {
-          space.w = ":w";
-          space.q = ":q";
-          space.x = ":x";
-        };
-      };
+      # Do not add plugins or config here, otherwise it'll conflict with our xdg config
     };
-
-    home-manager = {
-      # This needs to be true for this entire config to take effect
-      enable = true;
-    };
-
-    # starship = {
-    #   enable = true;
-    #   enableFishIntegration = true;
-    #   settings = {
-    #     add_newline = false;
-    #   };
-    # };
 
     tmux = {
       enable = true;
       baseIndex = 1;
       historyLimit = 100500;
       keyMode = "emacs";
-      prefix = "C-Space";
+      plugins = with pkgs; [
+        # tmuxPlugins.cpu
+        {
+          plugin = tmuxPlugins.resurrect;
+          # extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+        }
+        {
+          plugin = tmuxPlugins.continuum;
+          extraConfig = ''
+            set -g @continuum-restore 'on'
+            set -g @continuum-save-interval '5' # minutes
+          '';
+        }
+        pkgs.tmuxPlugins.yank
+      ];
+      prefix = "C-a";
       extraConfig = ''
         # Reduce timeout to prevent impact on vim within tmux
         set -sg escape-time 10
@@ -286,15 +307,34 @@
 
         # Enable mouse mode
         set-option -g mouse on
+
+        # Make the colours compatible with neovim
+        set-option -g default-terminal screen-256color
+
+        # Shortcuts
+          # reload config file (change file location to your the tmux.conf you want to use)
+          bind r source-file ~/.config/tmux/tmux.conf
+
+          # split panes using v and s (like vim), keeping current directory
+          bind v split-window -h -c "#{pane_current_path}"
+          bind s split-window -v -c "#{pane_current_path}"
+          unbind '"'
+          unbind %
+
+          # resize panes more easily
+          bind < resize-pane -L 10
+          bind > resize-pane -R 10
+          bind - resize-pane -D 10
+          bind + resize-pane -U 10
+
+          # switch panes using Alt-vim-arrow without prefix
+          bind -n M-Left select-pane -L
+          bind -n M-Right select-pane -R
+          bind -n M-Up select-pane -U
+          bind -n M-Down select-pane -D
       '';
-      plugins = [ pkgs.tmuxPlugins.yank ];
       # Change the default shell to home-manager's fish rather than the system default
       shell = "${config.home.homeDirectory}/.nix-profile/bin/fish";
-    };
-
-    zoxide = {
-      enable = true;
-      enableFishIntegration = true;
     };
   };
 
@@ -304,9 +344,5 @@
   xdg.configFile.nvim = {
     source = ./config/neovim;
     recursive = true;
-  };
-
-  xdg.configFile."starship.toml" = {
-    source = ./config/starship.toml;
   };
 }
