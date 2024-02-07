@@ -15,7 +15,7 @@ require('packages')
 -- Enable persistent undo, 
 vim.o.undofile = true
 -- Prevent errors like "cannot open undo file for writing"
-vim.o.undodir = '$HOME/.vim/undodir'
+vim.o.undodir = vim.env.HOME .. '/.vim/undodir'
 
 -- Enable the mouse in the terminal
 vim.o.mouse = 'a'

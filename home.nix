@@ -239,11 +239,6 @@
         color = {
           ui = true;
         };
-        diff = {
-          colorMoved = "default";
-          external = "difft";
-          tool = "difft";
-        };
         merge = {
           conflictstyle = "zdiff3";
         };
