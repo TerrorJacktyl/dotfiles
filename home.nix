@@ -139,14 +139,31 @@
         fish_prompt = {
           description = "Main prompt (ie directory and username).";
           body = ''
-            set -l last_status $status
+            set -l prompt_elements ()
+
+            set -l pwd_display (string join "" -- (set_color $fish_color_cwd) (prompt_pwd) (set_color normal))
+            set -a prompt_elements $pwd_display
+
             # Prompt status only if it's not 0
-            set -l stat
+            set -l last_status $status
+            set -l stat_display
             if test $last_status -ne 0
-                set stat (set_color red)"[$last_status] "(set_color normal)
+                set stat_display (string join "" -- (set_color red)"[$last_status]"(set_color normal))
+                set -a prompt_elements $stat_display
             end
 
-            string join "" -- (set_color green) (prompt_pwd) (set_color normal) " " $stat "λ" " "
+            # Git branch
+            set -l branch (git branch --show-current)
+            set -l branch_display
+            if test -n "$branch"
+              set branch_display (string join "" -- (set_color $fish_color_user) "($branch)" (set_color normal))
+              set -a prompt_elements $branch_display
+            end
+
+            # Final character
+            set -a prompt_elements "λ "
+
+            string join " " -- $prompt_elements
           '';
         };
         fish_right_prompt = {
