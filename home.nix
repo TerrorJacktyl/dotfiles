@@ -154,9 +154,15 @@
 
             # Git branch
             set -l branch (git branch --show-current)
-            set -l branch_display
+            set -l head (git rp --short HEAD)
+            set -l maybe_git_ref
             if test -n "$branch"
-              set branch_display (string join "" -- (set_color $fish_color_user) "($branch)" (set_color normal))
+              set maybe_git_ref "$branch"
+            else if test -n "$head"
+              set maybe_git_ref "$head"
+            end
+            if test -n "$maybe_git_ref"
+              set branch_display (string join "" -- (set_color $fish_color_user) "($maybe_git_ref)" (set_color normal))
               set -a prompt_elements $branch_display
             end
 
