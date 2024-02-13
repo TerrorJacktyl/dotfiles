@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
-{
+let
+  neovim = (import (builtins.fetchTarball {
+        url = "https://github.com/NixOS/nixpkgs/archive/9957cd48326fe8dbd52fdc50dd2502307f188b0d.tar.gz";
+    }) {}).neovim;
+in {
 
   fonts.fontconfig.enable = true;
 
@@ -9,8 +13,10 @@
     homeDirectory = "/Users/jack.z";
     # Specify packages not explicitly configured below
     packages = with pkgs; [
+      coreutils # for git feature branch function
       docker
       fd
+      neovim
       ripgrep
       tree
       youtube-dl
@@ -226,6 +232,7 @@
         cmm = "commit -m";
         co = "checkout";
         cob = "checkout -b";
+        cof = "!f() { git checkout -b \"zez/$(date -I)-$1\"; }; f";
         d = "diff";
         ds = "diff --staged";
         del = "branch -d";
@@ -290,11 +297,6 @@
         ".envrc"
         "environment.yaml"
       ];
-    };
-
-    neovim = {
-      enable = true;
-      # Do not add plugins or config here, otherwise it'll conflict with our xdg config
     };
 
     tmux = {
