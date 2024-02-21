@@ -25,6 +25,12 @@ in {
     stateVersion = "21.11";
   };
 
+  # Configuration for nix provided by home-manager, special
+  nix.package = pkgs.nix;
+  nix.settings = {
+    experimental-features = "nix-command";
+  };
+
   programs = {
     home-manager = {
       # This needs to be true for this entire config to take effect
