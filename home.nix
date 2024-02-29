@@ -165,8 +165,8 @@ in {
             end
 
             # Git branch
-            set -l branch (git branch --show-current)
-            set -l head (git rp --short HEAD)
+            set -l branch (git branch --show-current &> /dev/null)
+            set -l head (git rp --short HEAD &> /dev/null)
             set -l maybe_git_ref
             if test -n "$branch"
               set maybe_git_ref "$branch"
