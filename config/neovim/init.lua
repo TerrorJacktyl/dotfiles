@@ -18,6 +18,9 @@ vim.o.mouse = 'a'
 -- UI
 -----
 
+-- Theme
+vim.cmd[[colorscheme catppuccin]]
+
 -- Have some context around the current line always on screen
 vim.o.scrolloff = 3
 vim.o.sidescrolloff = 5

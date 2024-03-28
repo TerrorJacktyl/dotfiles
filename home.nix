@@ -4,13 +4,16 @@ let
   neovim = (import (builtins.fetchTarball {
         url = "https://github.com/NixOS/nixpkgs/archive/9957cd48326fe8dbd52fdc50dd2502307f188b0d.tar.gz";
     }) {}).neovim;
-in {
+in
+{
 
   fonts.fontconfig.enable = true;
 
   home = {
     username = "jack.z";
     homeDirectory = "/Users/jack.z";
+    stateVersion = "21.11";
+
     # Specify packages not explicitly configured below
     packages = with pkgs; [
       coreutils # for git feature branch function
@@ -21,14 +24,23 @@ in {
       tree
       youtube-dl
       (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"]; })
+      # unfree packages
+      raycast
     ];
-    stateVersion = "21.11";
   };
 
   # Configuration for nix provided by home-manager, special
   nix.package = pkgs.nix;
   nix.settings = {
     experimental-features = "nix-command";
+  };
+
+  # Permits unfree packages like Raycast
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = (_: true);
+    };
   };
 
   programs = {
