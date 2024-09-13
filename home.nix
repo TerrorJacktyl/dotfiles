@@ -1,25 +1,27 @@
 { config, pkgs, ... }:
 
-let
-  neovim = (import (builtins.fetchTarball {
-        url = "https://github.com/NixOS/nixpkgs/archive/9957cd48326fe8dbd52fdc50dd2502307f188b0d.tar.gz";
-    }) {}).neovim;
-in
 {
 
   fonts.fontconfig.enable = true;
 
   home = {
-    username = "jack.z";
-    homeDirectory = "/Users/jack.z";
+    username = "jackzezula";
+    homeDirectory = "/Users/jackzezula";
     stateVersion = "21.11";
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
+      # neovim
+      neovim
+      luajitPackages.luarocks # required by lazy package manager
+      # ocaml
+      ocaml
+      opam
+      dune_3
+
       coreutils # for git feature branch function
       docker
       fd
-      neovim
       ripgrep
       tree
       youtube-dl
@@ -47,6 +49,12 @@ in
     home-manager = {
       # This needs to be true for this entire config to take effect
       enable = true;
+    };
+
+    alacritty = {
+      settings = {
+        font.size = 16;
+      };
     };
 
     bat = {
@@ -240,7 +248,7 @@ in
     git = {
       enable = true;
       userName = "Jack Zezula ";
-      userEmail = "jack.z@canva.com";
+      userEmail = "jackzezula@tuta.io";
       aliases = {
         a = "add";
         b = "branch";
@@ -287,6 +295,12 @@ in
         color = {
           ui = true;
         };
+        commit = {
+          gpgsign = false;
+        };
+        init = {
+          defaultBranch = "main";
+        };
         merge = {
           conflictstyle = "zdiff3";
         };
@@ -295,9 +309,6 @@ in
         };
         pull = {
           ff = "only";
-        };
-        init = {
-          defaultBranch = "main";
         };
         # Clone git repos with URLs like "gh:alexpearce/dotfiles"
         url."git@github.com:" = {
@@ -339,6 +350,10 @@ in
       ];
       prefix = "C-a";
       extraConfig = ''
+        # Set default shell to fish
+        set -g default-shell "${config.home.homeDirectory}/.nix-profile/bin/fish";
+        set -g default-command "${config.home.homeDirectory}/.nix-profile/bin/fish";
+
         # Reduce timeout to prevent impact on vim within tmux
         set -sg escape-time 10
         set -s escape-time 0
@@ -371,8 +386,6 @@ in
           bind -n M-Up select-pane -U
           bind -n M-Down select-pane -D
       '';
-      # Change the default shell to home-manager's fish rather than the system default
-      shell = "${config.home.homeDirectory}/.nix-profile/bin/fish";
     };
   };
 
@@ -383,4 +396,17 @@ in
     source = ./config/neovim;
     recursive = true;
   };
+  home.file.".config/alacritty/alacritty.toml".text = "
+    # Live reload Alacritty config so it automatically responds to home-manager switches
+    live_config_reload = true
+
+    # Change Alacritty's default shell to home-manager's fish rather than the system default
+    shell = \"${config.home.homeDirectory}/.nix-profile/bin/fish\"
+
+    [font]
+    size = 14.0
+    
+    [window]
+    decorations = \"Transparent\"
+  ";
 }
