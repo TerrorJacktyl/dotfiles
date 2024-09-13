@@ -405,8 +405,7 @@
 
     [font]
     size = 14.0
-    
-    [window]
-    decorations = \"Transparent\"
+    [font.normal]
+    family = \"FiraCode Nerd Font Mono\"
   ";
 }
