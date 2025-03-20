@@ -9,9 +9,10 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, mac-app-util }:
   let
     nixDarwinConfig = { pkgs, ... }: {
       # Set Git commit hash for darwin-version.
@@ -36,9 +37,10 @@
         ./configuration.nix # System settings I give a shit about
         home-manager.darwinModules.home-manager
         {
+          # Make nix-installed applications available to spotlight/cmd-space searches
+          home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          # home-manager.users.jackzezula = import "/Users/jackzezula/.config/home-manager/home.nix";
           home-manager.users.jackzezula = import ./home.nix;
         }
       ];
