@@ -1,31 +1,40 @@
 { config, pkgs, ... }:
 
 {
-
-  fonts.fontconfig.enable = true;
+  fonts = {
+    fontconfig.enable = true;
+  };
 
   home = {
     username = "jackzezula";
     homeDirectory = "/Users/jackzezula";
-    stateVersion = "21.11";
+    stateVersion = "23.11";
+    enableNixpkgsReleaseCheck = false; # without this, nix incorrectly infers home-manager is v25
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
+      # testing a simple package will appear in my shell after a darwin-rebuild
+      hello
+
       # neovim
       neovim
       luajitPackages.luarocks # required by lazy package manager
+      lazygit # nice terminal ui
+
       # ocaml
       ocaml
       opam
       dune_3
+      # for youtube-dl only, yuck
+      python3
 
       coreutils # for git feature branch function
       docker
       fd
       ripgrep
       tree
-      youtube-dl
-      (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"]; })
+      # (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"]; })
+
       # unfree packages
       raycast
     ];
@@ -37,14 +46,6 @@
     experimental-features = "nix-command";
   };
 
-  # Permits unfree packages like Raycast
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = (_: true);
-    };
-  };
-
   programs = {
     home-manager = {
       # This needs to be true for this entire config to take effect
@@ -54,6 +55,7 @@
     alacritty = {
       settings = {
         font.size = 16;
+        general.live_config_reload = true;
       };
     };
 
@@ -85,6 +87,11 @@
         fish_add_path $HOME/go/bin
         # allow homebrew and its programs
         fish_add_path /opt/homebrew/bin
+        # add my custom bin
+        fish_add_path $HOME/bin
+
+        # Integrate OCaml's opam with fish
+        test -r '/Users/jackzezula/.opam/opam-init/init.fish' && source '/Users/jackzezula/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
       '';
       plugins = [
         {
@@ -328,6 +335,10 @@
       ];
     };
 
+    kitty = {
+      enable = true;
+    };
+
     tmux = {
       enable = true;
       baseIndex = 1;
@@ -367,6 +378,9 @@
         # Shortcuts
           # reload config file (change file location to your the tmux.conf you want to use)
           bind r source-file ~/.config/tmux/tmux.conf
+
+          # keep current directory in new windows
+          bind c new-window -c "#{pane_current_path}"
 
           # split panes using v and s (like vim), keeping current directory
           bind v split-window -h -c "#{pane_current_path}"
