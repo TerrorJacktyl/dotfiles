@@ -337,6 +337,9 @@
 
     kitty = {
       enable = true;
+      settings = {
+        shell = "${pkgs.fish}/bin/fish";
+      };
     };
 
     tmux = {

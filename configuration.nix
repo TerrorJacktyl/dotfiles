@@ -12,7 +12,7 @@
   nix.settings.experimental-features = "nix-command flakes";
   
   # Enable alternative shell support in nix-darwin.
-  # programs.fish.enable = true;
+  programs.fish.enable = true;
 
   # Use touch ID instead of password for sudo
   security.pam.enableSudoTouchIdAuth = true;
