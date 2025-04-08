@@ -1,15 +1,32 @@
 { self, pkgs, ... }: {
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages = with pkgs; [ 
-    duti
-    vim
-    # vlc # someday we'll have aarch64 support, but not today
-  ];
-  
+  environment = {
+    systemPackages = with pkgs; [ 
+      duti
+      vim
+      # vlc # someday we'll have aarch64 support, but not today
+    ];
+
+    # variables = {
+    #   FLAKE_PATH = ""
+    # }
+  };
+
   homebrew = {
     enable = true;
-    casks = [ "vlc" "todoist" ];
+    casks = [
+      "discord"
+      "firefox"
+      "obsidian"
+      "purevpn"
+      "qbittorrent"
+      "signal"
+      "shottr"
+      "spotify"
+      "todoist"
+      "vlc"
+    ];
   };
 
   # Permits nix-darwin to work with Determinate
