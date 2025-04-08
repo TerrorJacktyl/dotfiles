@@ -9,7 +9,7 @@
   
   homebrew = {
     enable = true;
-    casks = [ "vlc" ];
+    casks = [ "vlc" "todoist" ];
   };
 
   # Permits nix-darwin to work with Determinate
