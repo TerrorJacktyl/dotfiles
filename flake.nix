@@ -14,6 +14,18 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, mac-app-util }:
   let
+    username = "jackzezula"; # Change this if you're not Jack, or you're Jack going undercover
+    userInfoFor = system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+
+        homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
+      in { inherit username homeDirectory pkgs; };
+
+    DARWIN_PLATFORM = "aarch64-darwin";
+    darwin = userInfoFor DARWIN_PLATFORM;
+    # Some day, a beautiful Linux home-manager or NixOS configuration will go here...
+
     nixDarwinConfig = { pkgs, ... }: {
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -23,15 +35,15 @@
       system.stateVersion = 5;
       
       # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "aarch64-darwin";
+      nixpkgs.hostPlatform = DARWIN_PLATFORM;
 
       # Home directory
-      users.users.jackzezula.home = "/Users/jackzezula";
+      users.users.${username}.home = darwin.homeDirectory;
     };
   in {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#jackzezula
-    darwinConfigurations."jackzezula" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations.${username} = nix-darwin.lib.darwinSystem {
       modules = [
         nixDarwinConfig
         ./configuration.nix # System settings I give a shit about
@@ -41,7 +53,7 @@
           home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.jackzezula = import ./home.nix;
+          home-manager.users.${username} = import ./home.nix { inherit (darwin) username homeDirectory; };
         }
       ];
     };

@@ -1,3 +1,7 @@
+# Curried to permit cross-platform homeDirectory changing, and DRY username in flake.nix
+{ username, homeDirectory }:
+
+# Home configuration
 { config, pkgs, ... }:
 
 {
@@ -6,8 +10,8 @@
   };
 
   home = {
-    username = "jackzezula";
-    homeDirectory = "/Users/jackzezula";
+    username = username;
+    homeDirectory = homeDirectory;
     stateVersion = "23.11";
     enableNixpkgsReleaseCheck = false; # without this, nix incorrectly infers home-manager is v25
 
@@ -77,9 +81,6 @@
     fish = {
       enable = true;
       interactiveShellInit = ''
-        # Activate the iTerm 2 shell integration
-        # iterm2_shell_integration
-
         # Make fzf use fd because it's faster than find
         set --universal FZF_DEFAULT_COMMAND 'fd'
 
@@ -133,7 +134,7 @@
         cr = "vscode_from_fuzzy_ripgrep";
         fr = "filename_from_fuzzy_ripgrep";
         hme = "EDITOR=(which nvim) home-manager -f ~/dotfiles/home.nix edit";
-        hms = "home-manager -f ~/dotfiles/home.nix switch";
+        # ds = "darwin-rebuild switch --flake ${./.}";
         n = "nvim";
         o = "open";
       };
