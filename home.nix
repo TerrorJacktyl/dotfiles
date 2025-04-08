@@ -1,5 +1,5 @@
 # Curried to permit cross-platform homeDirectory changing, and DRY username in flake.nix
-{ username, homeDirectory }:
+{ username, homeDirectory, flakeDirectory }:
 
 # Home configuration
 { config, pkgs, ... }:
@@ -92,7 +92,7 @@
         fish_add_path $HOME/bin
 
         # Integrate OCaml's opam with fish
-        test -r '/Users/jackzezula/.opam/opam-init/init.fish' && source '/Users/jackzezula/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
+        test -r '${config.home.homeDirectory}/.opam/opam-init/init.fish' && source '${config.home.homeDirectory}/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
       '';
       plugins = [
         {
@@ -134,7 +134,7 @@
         cr = "vscode_from_fuzzy_ripgrep";
         fr = "filename_from_fuzzy_ripgrep";
         hme = "EDITOR=(which nvim) home-manager -f ~/dotfiles/home.nix edit";
-        # ds = "darwin-rebuild switch --flake ${./.}";
+        ds = "darwin-rebuild switch --flake ${flakeDirectory}";
         n = "nvim";
         o = "open";
       };
@@ -255,8 +255,8 @@
 
     git = {
       enable = true;
-      userName = "Jack Zezula ";
-      userEmail = "jackzezula@tuta.io";
+      userName = "Jack Zezula";
+      userEmail = "hey+github@jackzezula.com";
       aliases = {
         a = "add";
         b = "branch";

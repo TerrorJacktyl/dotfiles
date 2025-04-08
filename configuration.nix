@@ -4,13 +4,8 @@
   environment = {
     systemPackages = with pkgs; [ 
       duti
-      vim
       # vlc # someday we'll have aarch64 support, but not today
     ];
-
-    # variables = {
-    #   FLAKE_PATH = ""
-    # }
   };
 
   homebrew = {

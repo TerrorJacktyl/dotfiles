@@ -20,7 +20,8 @@
         pkgs = import nixpkgs { inherit system; };
 
         homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
-      in { inherit username homeDirectory pkgs; };
+        flakeDirectory = "${homeDirectory}/dotfiles"; # if you haven't cloned the repo here, you're in big trouble
+      in { inherit username flakeDirectory homeDirectory pkgs; };
 
     DARWIN_PLATFORM = "aarch64-darwin";
     darwin = userInfoFor DARWIN_PLATFORM;
@@ -53,7 +54,7 @@
           home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.${username} = import ./home.nix { inherit (darwin) username homeDirectory; };
+          home-manager.users.${username} = import ./home.nix { inherit (darwin) username flakeDirectory homeDirectory; };
         }
       ];
     };
