@@ -11,11 +11,14 @@
   homebrew = {
     enable = true;
     casks = [
+      "bitwarden"
       "discord"
       "firefox"
       "obsidian"
+      "keymapp" # zsa moonlander keyboard
       "purevpn"
       "qbittorrent"
+      "scroll-reverser"
       "signal"
       "shottr"
       "spotify"

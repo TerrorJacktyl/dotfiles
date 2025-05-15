@@ -350,10 +350,7 @@
       keyMode = "emacs";
       plugins = with pkgs; [
         # tmuxPlugins.cpu
-        {
-          plugin = tmuxPlugins.resurrect;
-          # extraConfig = "set -g @resurrect-strategy-nvim 'session'";
-        }
+        tmuxPlugins.resurrect;
         {
           plugin = tmuxPlugins.continuum;
           extraConfig = ''

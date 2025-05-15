@@ -52,8 +52,9 @@
         {
           # Make nix-installed applications available to spotlight/cmd-space searches
           home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];
+          # Share NixOS's nixpkgs with home manager to prevent double nix eval
           home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
+          # Hook in our home manager setup
           home-manager.users.${username} = import ./home.nix { inherit (darwin) username flakeDirectory homeDirectory; };
         }
       ];
