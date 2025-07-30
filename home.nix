@@ -124,6 +124,8 @@
         mv = "mv -i";
         mkdir = "mkdir -p";
         du = "du -hs";
+        # shared markdown scratchpad through icloud
+        scratch = "nvim /Users/jackzezula/Library/Mobile Documents/com~apple~CloudDocs/Scratch.md";
       };
       # Abbreviate commonly used functions
       # An abbreviation will expand after <space> or <Enter> is hit
@@ -350,7 +352,7 @@
       keyMode = "emacs";
       plugins = with pkgs; [
         # tmuxPlugins.cpu
-        tmuxPlugins.resurrect;
+        tmuxPlugins.resurrect
         {
           plugin = tmuxPlugins.continuum;
           extraConfig = ''
