@@ -53,8 +53,6 @@
         ./configuration.nix # System settings I give a shit about
         home-manager.darwinModules.home-manager
         {
-          # Make nix-installed applications available to spotlight/cmd-space searches
-          home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];
           # Share NixOS's nixpkgs with home manager to prevent double nix eval
           home-manager.useGlobalPkgs = true;
           # Hook in our home manager setup

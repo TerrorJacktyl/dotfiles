@@ -137,8 +137,7 @@
         cf = "code (fd . . | fzf)";
         cr = "vscode_from_fuzzy_ripgrep";
         fr = "filename_from_fuzzy_ripgrep";
-        hme = "EDITOR=(which nvim) home-manager -f ~/dotfiles/home.nix edit";
-        ds = "darwin-rebuild switch --flake ${flakeDirectory}";
+        ds = "sudo darwin-rebuild switch --flake ${flakeDirectory}";
         n = "nvim";
         o = "open";
       };
@@ -147,10 +146,6 @@
           description = "Convert a string containing spaces to a list, which when substituted will act like each word was typed as a separate command";
           argumentNames = "s";
           body = "string split ' ' -- $s";
-        };
-        vscode_from_fuzzy_ripgrep = {
-          description = "Filter file contents using ripgrep, select a match from a fuzzy-search, and finally open the selection in VSCode.";
-          body = "code --goto (filename_and_line_from_fuzzy_ripgrep $argv)";
         };
         filename_and_line_from_fuzzy_ripgrep = {
           description = "Filter file contents using ripgrep, select a match from a fuzzy-search, and finally return the path and line number of the match. For example, path/to/file:23";
@@ -414,6 +409,7 @@
   xdg.configFile.nvim = {
     source = ./config/neovim;
     recursive = true;
+    force = true;
   };
   home.file.".config/alacritty/alacritty.toml".text = "
     # Live reload Alacritty config so it automatically responds to home-manager switches

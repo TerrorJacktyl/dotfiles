@@ -20,8 +20,7 @@
       "scroll-reverser"
       "signal"
       "shottr"
-      "spotify"
-      "todoist"
+      "todoist-app"
       "vlc"
     ];
   };
