@@ -71,6 +71,8 @@
       };
     };
 
+    delta.enableGitIntegration = true;
+
     direnv = {
       enable = true;
       nix-direnv = {
@@ -255,7 +257,7 @@
       };
     };
 
-    git = {
+    git.settings = {
       enable = true;
       userName = "Jack Zezula";
       userEmail = "hey+github@jackzezula.com";

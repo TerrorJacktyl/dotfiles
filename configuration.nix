@@ -15,7 +15,6 @@
       "discord"
       "firefox"
       "obsidian"
-      "keymapp" # zsa moonlander keyboard
       "purevpn"
       "qbittorrent"
       "scroll-reverser"
@@ -37,7 +36,7 @@
   programs.fish.enable = true;
 
   # Use touch ID instead of password for sudo
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   system.defaults.dock.autohide = true;
 

@@ -4,10 +4,11 @@
   description = "Example nix-darwin system flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
-    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
+    # Make nix-darwin and home-manager share the same nixpkgs
+    nix-darwin.url = "github:lnl7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-26.05"; # ...
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     mac-app-util.url = "github:hraban/mac-app-util";
   };
@@ -28,6 +29,8 @@
     # Some day, a beautiful Linux home-manager or NixOS configuration will go here...
 
     nixDarwinConfig = { pkgs, ... }: {
+      system.primaryUser = username;
+
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
       
