@@ -25,7 +25,7 @@
     ];
   };
 
-  # Permits nix-darwin to work with Determinate
+  # Permits nix-darwin to work with Determinate. Must be false.
   nix.enable = false;
   
   # Necessary for using flakes on this system.

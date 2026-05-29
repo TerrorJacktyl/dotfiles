@@ -17,27 +17,16 @@
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
-      # testing a simple package will appear in my shell after a darwin-rebuild
-      hello
-
       # neovim
       neovim
       luajitPackages.luarocks # required by lazy package manager
       lazygit # nice terminal ui
-
-      # ocaml
-      ocaml
-      opam
-      dune_3
-      # for youtube-dl only, yuck
-      python3
 
       coreutils # for git feature branch function
       docker
       fd
       ripgrep
       tree
-      # (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"]; })
 
       # unfree packages
       raycast
@@ -54,13 +43,6 @@
     home-manager = {
       # This needs to be true for this entire config to take effect
       enable = true;
-    };
-
-    alacritty = {
-      settings = {
-        font.size = 16;
-        general.live_config_reload = true;
-      };
     };
 
     bat = {
@@ -86,15 +68,8 @@
         # Make fzf use fd because it's faster than find
         set --universal FZF_DEFAULT_COMMAND 'fd'
 
-        # allow finding programs installed by go
-        fish_add_path $HOME/go/bin
-        # allow homebrew and its programs
-        fish_add_path /opt/homebrew/bin
         # add my custom bin
         fish_add_path $HOME/bin
-
-        # Integrate OCaml's opam with fish
-        test -r '${config.home.homeDirectory}/.opam/opam-init/init.fish' && source '${config.home.homeDirectory}/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
       '';
       plugins = [
         {
@@ -411,16 +386,4 @@
     recursive = true;
     force = true;
   };
-  home.file.".config/alacritty/alacritty.toml".text = "
-    # Live reload Alacritty config so it automatically responds to home-manager switches
-    live_config_reload = true
-
-    # Change Alacritty's default shell to home-manager's fish rather than the system default
-    shell = \"${config.home.homeDirectory}/.nix-profile/bin/fish\"
-
-    [font]
-    size = 14.0
-    [font.normal]
-    family = \"FiraCode Nerd Font Mono\"
-  ";
 }
