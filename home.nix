@@ -1,8 +1,8 @@
 # Curried to permit cross-platform homeDirectory changing, and DRY username in flake.nix
-{ username, homeDirectory, flakeDirectory }:
+{ username, homeDirectory, flakeDirectory, dotfilesAbsolutePath }:
 
 # Home configuration
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   fonts = {
@@ -378,12 +378,16 @@
     };
   };
 
-  # FIXME The init.vim unconditionally installed by this module conflicts with
-  # our init.lua, so we cannot use the module for now and must install the
-  # configuration explicitly
-  xdg.configFile.nvim = {
-    source = ./config/neovim;
-    recursive = true;
-    force = true;
+  home.activation = {
+    # Symlink entire nvim folder so that LazyVim can write back to our declarative config
+    link-nvim = let
+      src = "${flakeDirectory}/config/nvim";
+      target = "${homeDirectory}/.config/nvim";
+    in
+      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      echo 🔥 Symlinking config directories to enable live config-reloads for:
+      echo "${src} -> ${target}"
+      run ln -sFf $VERBOSE_ARG ${src} ${target}
+    '';
   };
 }

@@ -56,7 +56,9 @@
           # Share NixOS's nixpkgs with home manager to prevent double nix eval
           home-manager.useGlobalPkgs = true;
           # Hook in our home manager setup
-          home-manager.users.${username} = import ./home.nix { inherit (darwin) username flakeDirectory homeDirectory; };
+          home-manager.users.${username} = import ./home.nix {
+              inherit (darwin) username flakeDirectory homeDirectory dotfilesAbsolutePath;
+          };
         }
       ];
     };

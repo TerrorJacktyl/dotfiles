@@ -37,7 +37,15 @@
   # Use touch ID instead of password for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  system.defaults.dock.autohide = true;
+  system.defaults = {
+    dock.autohide = true;
+
+    finder = {
+      AppleShowAllExtensions = true;
+      ShowPathbar = true;
+      FXEnableExtensionChangeWarning = false;
+    };
+  };
 
   # Permits unfree packages like Raycast
   nixpkgs = {
