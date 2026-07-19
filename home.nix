@@ -17,19 +17,24 @@
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
-      # neovim
+      # neovim and friends
       neovim
       luajitPackages.luarocks # required by lazy package manager
       lazygit # nice terminal ui
 
+      # helpful command line
       coreutils # for git feature branch function
-      docker
       fd
       ripgrep
       tree
 
       # unfree packages
       raycast
+
+      # others
+      ghc
+      haskell-language-server
+      hlint
     ];
   };
 

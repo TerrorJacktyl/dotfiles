@@ -18,8 +18,10 @@
       "purevpn"
       "qbittorrent"
       "scroll-reverser"
+      "raycast"
       "signal"
       "shottr"
+      "steam"
       "todoist-app"
       "vlc"
     ];
