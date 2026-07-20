@@ -37,7 +37,10 @@
   programs.fish.enable = true;
 
   # Use touch ID instead of password for sudo
-  security.pam.services.sudo_local.touchIdAuth = true;
+  security.pam.services.sudo_local = {
+    touchIdAuth = true;
+    reattach = true; # support in tmux
+  };
 
   system.defaults = {
     dock.autohide = true;

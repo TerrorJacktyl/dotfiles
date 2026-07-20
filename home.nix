@@ -21,6 +21,8 @@
       neovim
       luajitPackages.luarocks # required by lazy package manager
       lazygit # nice terminal ui
+      opam # ocaml support
+      statix
 
       # helpful command line
       coreutils # for git feature branch function
@@ -392,7 +394,7 @@
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       echo 🔥 Symlinking config directories to enable live config-reloads for:
       echo "${src} -> ${target}"
-      run ln -sFf $VERBOSE_ARG ${src} ${target}
+      run ln -sfn $VERBOSE_ARG ${src} ${target}
     '';
   };
 }
