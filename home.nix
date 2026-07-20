@@ -10,8 +10,7 @@
   };
 
   home = {
-    username = username;
-    homeDirectory = homeDirectory;
+    inherit username homeDirectory;
     stateVersion = "23.11";
     enableNixpkgsReleaseCheck = false; # without this, nix incorrectly infers home-manager is v25
 
@@ -21,8 +20,9 @@
       neovim
       luajitPackages.luarocks # required by lazy package manager
       lazygit # nice terminal ui
-      opam # ocaml support
-      statix
+      # nix-managed deps for mason
+      statix # nix formatter
+      cargo
 
       # helpful command line
       coreutils # for git feature branch function
@@ -33,7 +33,7 @@
       # unfree packages
       raycast
 
-      # others
+      # manage haskell with nix bc can't with mason
       ghc
       haskell-language-server
       hlint
@@ -324,13 +324,17 @@
       };
     };
 
+    opam = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
     tmux = {
       enable = true;
       baseIndex = 1;
       historyLimit = 100500;
       keyMode = "emacs";
       plugins = with pkgs; [
-        # tmuxPlugins.cpu
         tmuxPlugins.resurrect
         {
           plugin = tmuxPlugins.continuum;
